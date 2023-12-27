@@ -137,9 +137,9 @@ void LibMain::OnSwitchToWiringView()
     setBPM(99);
 }
 
-void LibMain::OnGlobalPlayStateChanged(bool playing)
+void LibMain::OnGlobalPlayStateChanged(double playing)
 {
-    consoleLog(std::string("playing = ") + (playing ? " true" : "false"));
+    consoleLog(std::string("playing = ") + ((playing > 0.0) ? " true" : "false"));
 
     // switchToSetlistView();
     // switchToWiringView();
