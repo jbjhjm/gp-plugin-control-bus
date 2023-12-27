@@ -33,7 +33,7 @@ jobs:
             CMAKE_ADDITIONAL_OPTIONS: "-D 'GIG_PERFORMER_EXTENSIONS_DIRECTORY=${{ github.workspace }}/build/install'"
         steps:
             - name: Checkout pizmidi
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - name: "Ccache"
               uses: hendrikmuhs/ccache-action@6d1841ec156c39a52b1b23a810da917ab98da1f4 # v1.2.10
               if: env.CCACHE_AVAILABLE == 'true'
