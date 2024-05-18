@@ -1,7 +1,14 @@
-# GP Extension example for C++
+# GP Extension - Plugin Control Bus
 
-This is an example extension using the [Gig Performer SDK](https://github.com/gigperformer/gp-sdk).
-You can use it as a base for your own extensions developed in plain C++ (without JUCE).
+Rackspace-level scripts are allowed to access plugins when they have a handle assigned their handles.
+In most situations, plugin control via widget bindings and rackspace-level script automation is sufficient.
+In complex setups with many dynamic controls, the only current alternative is to communicate via OSC to circumvent the limitations.
+However, using OSC means the application sends and receives messages to itself on a port, and OSC can fail to initialize.
+This extension aims to provide an alternative via a set of GPScript functions that can be used to configurate plugins without needing OSC.
+
+## How to use
+
+Soon...
 
 ## How to build...
 
