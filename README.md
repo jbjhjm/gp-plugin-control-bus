@@ -10,6 +10,16 @@ This extension aims to provide an alternative via a set of GPScript functions th
 
 Soon...
 
+## Setup compiler (Win with vscode)
+
+Install Visual Studio Build Tools with C++ desktop development workload and Components 
+If winget is set up correctly, you can install all using `winget install Microsoft.VisualStudio.2022.BuildTools --force --override "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK"` 
+
+vscode will only have correct Path env available to detect cl.exe if it is being started from visual studio CLI.
+To do so, run "Developer Command Prompt for VS20XX". CLI should open. Execute `code x:\path\to\repo` to launch VS with C++ env.
+
+In vscode, run "Select IntelliSense Configuration", to see if a compiler was found.
+
 ## How to build...
 
 ### ... on macOS

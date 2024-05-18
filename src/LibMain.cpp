@@ -1,4 +1,5 @@
 #include "LibMain.h"
+#include "version.h"
 
 #include <cstdint>
 
@@ -15,11 +16,11 @@ const std::string XMLProductDescription =
     // Replace with your information
     "<Library>"
     "  <Product"
-    "    Name=\"Hello GP - CPP\""
-    "    Version=\"1.0\""
-    "    BuildDate=\"06/10/2022\">"
+    "    Name=\"" + PROJECT_NAME + "\""
+    "    Version=\"" + PROJECT_VERSION + "\""
+    "    BuildDate=\"" + PROJECT_BUILD_DATE + "\">"
     "  </Product> "
-    "  <Description>Briefly describe your product</Description>"
+    "  <Description>Communicate with Plugins from anywhere using PluginControlBus instead of needing to use OSC</Description>"
     "  <ImagePath>/Path/To/ImageFile/foo.jpg</ImagePath>"
     "</Library>";
 
