@@ -105,6 +105,29 @@ void LibMain::Initialization()
     registerCallback("OnRackspaceActivated");
 }
 
+void LibMain::setDebug(boolean state) 
+{
+	debug = state;
+}
+
+boolean LibMain::assertPluginExists(std::string handle)
+{
+	boolean exists = pluginExists(handle, false);
+	if(!exists) {
+		scriptLog("MISSING PLUGIN HANDLE: "+handle, true);
+	}
+	return exists;
+}
+
+boolean LibMain::assertWidgetExists(std::string handle)
+{
+	boolean exists = widgetExists(handle);
+	if(!exists) {
+		scriptLog("MISSING WIDGET HANDLE: "+handle, true);
+	}
+	return exists;
+}
+
 std::string LibMain::GetProductDescription()
 {
     // Generally don't touch this - simply define the constant

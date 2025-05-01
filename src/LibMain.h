@@ -23,6 +23,8 @@ class LibMain : public gigperformer::sdk::GigPerformerAPI
 		{
 			return (instance);
 		}
+		
+		boolean debug = true;
 
 	private:
 
@@ -32,20 +34,22 @@ class LibMain : public gigperformer::sdk::GigPerformerAPI
 		int GetMenuCount() override;
 		std::string GetMenuName(int index) override;
 		void InvokeMenu(int itemIndex) override;
-
+		
 	public:
 		explicit LibMain(LibraryHandle handle) : GigPerformerAPI(handle)
 		{
 		}
-
+		
 		~LibMain() override
 		{
 		}
 
+		void setDebug(boolean state); 
+		boolean assertPluginExists(std::string handle);
+		boolean assertWidgetExists(std::string handle);
+		
 		void OnRackspaceActivated() override
-		{
-			consoleLog("Rackspace activated");
-		}
+		{}
 
 		void Initialization() override;
 

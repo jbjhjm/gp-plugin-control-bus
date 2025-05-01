@@ -7,11 +7,15 @@
 #include "LibMain.h"
 #include <stdexcept>
 
-extern "C" void addtwo(GPRuntimeEngine *vm)
+
+extern "C" void GPCB_debug(GPRuntimeEngine *vm)
 {
-    int b = GP_VM_PopInteger(vm);
-    int a = GP_VM_PopInteger(vm);
-    GP_VM_PushInteger(vm, a + b);
+	
+	bool state = GP_VM_PopBoolean(vm);
+
+	LibMain::getInstance()->setDebug(state);
+	// gpcb->loadGPPreset(pluginHandle, presetName)
+
 }
 
 extern "C" void GPCB_loadGPPreset(GPRuntimeEngine *vm)
@@ -24,8 +28,11 @@ extern "C" void GPCB_loadGPPreset(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
-	LibMain::getInstance()->scriptLog("GPCB_loadGPPreset " + pluginHandle + " - " + presetName, true);
-	// LibMain::getInstance()->loadGPPreset(pluginHandle, presetName)
+	LibMain* gpcb = LibMain::getInstance();
+
+	if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset " + pluginHandle + " - " + presetName, false);
+	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
+	// gpcb->loadGPPreset(pluginHandle, presetName)
 
 }
 
@@ -43,8 +50,10 @@ extern "C" void GPCB_setPluginParam(GPRuntimeEngine *vm)
 	char paramValueString[20];
 	gcvt(paramValue, 10, paramValueString);
 
-	LibMain::getInstance()->scriptLog("GPCB_setPluginParam " + pluginHandle + " - " + std::to_string(paramNumber) + "=" + paramValueString, true);
-	LibMain::getInstance()->setPluginParameter(pluginHandle, paramNumber, paramValue, false);
+	LibMain* gpcb = LibMain::getInstance();
+	if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginParam " + pluginHandle + " - " + std::to_string(paramNumber) + "=" + paramValueString, false);
+	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
+	gpcb->setPluginParameter(pluginHandle, paramNumber, paramValue, false);
 
 }
 
@@ -57,8 +66,10 @@ extern "C" void GPCB_setPluginBypass(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
-	LibMain::getInstance()->scriptLog("GPCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), true);
-	LibMain::getInstance()->setPluginParameter(pluginHandle, -2, paramValue, false);
+	LibMain* gpcb = LibMain::getInstance();
+	if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
+	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
+	gpcb->setPluginParameter(pluginHandle, -2, paramValue, false);
 
 }
 
@@ -71,8 +82,10 @@ extern "C" void GPCB_showPlugin(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
-	LibMain::getInstance()->scriptLog("GPCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), true);
-	LibMain::getInstance()->setPluginParameter(pluginHandle, -1, paramValue, false);
+	LibMain* gpcb = LibMain::getInstance();
+	if(gpcb->debug) gpcb->scriptLog("GPCB_showPlugin " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
+	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
+	gpcb->setPluginParameter(pluginHandle, -1, paramValue, false);
 
 }
 
@@ -88,8 +101,10 @@ extern "C" void GPCB_setWidgetValue(GPRuntimeEngine *vm)
 	char valueString[20];
 	gcvt(value, 10, valueString);
 
-	LibMain::getInstance()->scriptLog("GPCB_setWidgetValue " + widgetHandle + " = " + valueString, true);
-	LibMain::getInstance()->setWidgetValue(widgetHandle, value);
+	LibMain* gpcb = LibMain::getInstance();
+	if(gpcb->debug) gpcb->scriptLog("GPCB_setWidgetValue " + widgetHandle + " = " + valueString, false);
+	if(gpcb->debug) gpcb->assertWidgetExists(widgetHandle);
+	gpcb->setWidgetValue(widgetHandle, value);
 
 }
 
@@ -104,13 +119,15 @@ extern "C" void GPCB_setWidgetCaption(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string widgetHandle = buffer;
 
-	LibMain::getInstance()->scriptLog("GPCB_setWidgetCaption " + widgetHandle + " = " + caption, true);
-	LibMain::getInstance()->setWidgetCaption(widgetHandle, caption);
+	LibMain* gpcb = LibMain::getInstance();
+	if(gpcb->debug) gpcb->scriptLog("GPCB_setWidgetCaption " + widgetHandle + " = " + caption, false);
+	if(gpcb->debug) gpcb->assertWidgetExists(widgetHandle);
+	gpcb->setWidgetCaption(widgetHandle, caption);
 
 }
 
 ExternalAPI_GPScriptFunctionDefinition GPScriptFunctionsList[] = {
-    {"AddTwo", 				"a : integer, b :integer", 							"Returns Integer", "Add the integers", addtwo},
+    {"debug", 				"enable : boolean", 								"", "Enable debug logging", GPCB_debug},
     {"loadGPPreset", 		"handle : string, preset : string", 				"", "Load GPPreset for a plugin", GPCB_loadGPPreset},
     {"setPluginParam", 		"handle : string, paramIndex : int, value : double","", "Set param for a plugin", GPCB_setPluginParam},
     {"setPluginBypass", 	"handle : string, value : double", 					"", "Set bypass for a plugin", GPCB_setPluginBypass},
