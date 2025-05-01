@@ -67,6 +67,9 @@ std::string pathToMe; // This needs to be initialized from the initialization
 //     }
 //     return text;
 // }
+
+const LibMain* LibMain::instance = NULL;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// \name    Menu support
 /// \details 3 functions are used to implement menu actions: one returns number of avail items, second the labels at index, and third executes actions at index.
@@ -306,7 +309,10 @@ namespace sdk
 
 GigPerformerAPI *CreateGPExtension(LibraryHandle handle)
 {
-    return new LibMain(handle);
+	// LibMain::init(handle);
+	LibMain* instance = new LibMain(handle);
+	LibMain::storeInstance(instance);
+    return instance;
 }
 
 } // namespace sdk

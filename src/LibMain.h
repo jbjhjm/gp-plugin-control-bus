@@ -4,9 +4,59 @@
 #include "gigperformer/sdk/GPUtils.h"
 #include "gigperformer/sdk/GigPerformerAPI.h"
 #include "gigperformer/sdk/types.h"
+#include <windows.h>
+
+void alert(const char* text) {
+    MessageBoxA(NULL, text, "Message", MB_OK | MB_ICONINFORMATION);
+}
 
 class LibMain : public gigperformer::sdk::GigPerformerAPI
 {
+
+	public:
+	//   static LibMain* getInstancePointer()
+	//   {
+	// 	  return &getInstanceImpl();
+	//   }
+	//   static LibMain& getInstance()
+	//   {
+	// 	  return getInstanceImpl();
+	//   }
+	//   static void init(LibraryHandle handle) // enable moving in
+	//   {
+	// 	  getInstanceImpl(&handle);
+	//   }
+	
+	  // static LibMain& getInstance(LibraryHandle handle)
+	  //     {
+	  //         // Instantiated on first use.
+	  // 		// Guaranteed to be destroyed.
+	  //         static LibMain instance {handle}; 
+	  //         return instance;
+	  //     }
+  
+	//   private:
+  
+		//   static LibMain* getInstanceImpl(LibraryHandle* const handle = nullptr)
+		//   {
+		// 	  static LibMain instance{ handle };
+		// 	  return &instance;
+		//   }
+
+			static const LibMain* instance;
+  
+		  static void storeInstance(LibMain* incoming)
+		  {
+			  instance = incoming;
+		  }
+		  static const LibMain& getInstance()
+		  {
+			  return *LibMain::instance;
+		  }
+
+
+
+
   protected:
     // int GetPanelCount() override;
     // std::string GetPanelName(int index) override;
@@ -22,6 +72,7 @@ class LibMain : public gigperformer::sdk::GigPerformerAPI
     // These must be here but no need to do anything unless you want extra behavior
     explicit LibMain(LibraryHandle handle) : GigPerformerAPI(handle)
     {
+		if (handle == nullptr) alert( "LibMain was constructed without calling LibMain::Init!" );
     }
 
     ~LibMain() override
