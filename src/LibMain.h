@@ -4,13 +4,63 @@
 #include "gigperformer/sdk/GPUtils.h"
 #include "gigperformer/sdk/GigPerformerAPI.h"
 #include "gigperformer/sdk/types.h"
+#include <windows.h>
+
+void alert(const char* text) {
+    MessageBoxA(NULL, text, "Message", MB_OK | MB_ICONINFORMATION);
+}
 
 class LibMain : public gigperformer::sdk::GigPerformerAPI
 {
+
+	public:
+	//   static LibMain* getInstancePointer()
+	//   {
+	// 	  return &getInstanceImpl();
+	//   }
+	//   static LibMain& getInstance()
+	//   {
+	// 	  return getInstanceImpl();
+	//   }
+	//   static void init(LibraryHandle handle) // enable moving in
+	//   {
+	// 	  getInstanceImpl(&handle);
+	//   }
+	
+	  // static LibMain& getInstance(LibraryHandle handle)
+	  //     {
+	  //         // Instantiated on first use.
+	  // 		// Guaranteed to be destroyed.
+	  //         static LibMain instance {handle}; 
+	  //         return instance;
+	  //     }
+  
+	//   private:
+  
+		//   static LibMain* getInstanceImpl(LibraryHandle* const handle = nullptr)
+		//   {
+		// 	  static LibMain instance{ handle };
+		// 	  return &instance;
+		//   }
+
+			static LibMain* instance;
+  
+			static void storeInstance(LibMain* incoming)
+			{
+				instance = incoming;
+			}
+			static LibMain* getInstance()
+			{
+				return (instance);
+			}
+
+
+
+
   protected:
-    int GetPanelCount() override;
-    std::string GetPanelName(int index) override;
-    std::string GetPanelXML(int index) override;
+    // int GetPanelCount() override;
+    // std::string GetPanelName(int index) override;
+    // std::string GetPanelXML(int index) override;
 
     // These are for creating menu items in Gig Performer that can be used to
     // trigger external functions provided by the extension developer
@@ -22,56 +72,27 @@ class LibMain : public gigperformer::sdk::GigPerformerAPI
     // These must be here but no need to do anything unless you want extra behavior
     explicit LibMain(LibraryHandle handle) : GigPerformerAPI(handle)
     {
+		// if (handle == nullptr) alert( "LibMain was constructed without calling LibMain::Init!" );
+		// else alert("Lib main constructed WITH handle");
     }
 
     ~LibMain() override
     {
     }
 
-    void OnStatusChanged(GPStatusType status) override
-    {
-        consoleLog("Gig status changed to " + std::to_string(status));
-    }
+    // void OnStatusChanged(GPStatusType status) override
+    // {
+    //     consoleLog("Gig status changed to " + std::to_string(status));
+    // }
 
     void OnRackspaceActivated() override
     {
         consoleLog("Rackspace activated");
     }
 
-    void OnSetlistChanged(const std::string &newSetlistName) override
-    {
-        consoleLog("Setlist switched to: " + newSetlistName);
-    }
-
-    void OnModeChanged(int mode) override;
-
-    void OnSwitchToPanelView() override;
-
-    void OnSwitchToWiringView() override;
-
-    void OnTempoChanged(double) override
-    {
-        consoleLog("Tempo changed");
-    }
-
-    void OnGlobalPlayStateChanged(double playing) override;
-
-    // Now, simply override the callback methods in which you are interested
-    // and, in the Initialization method at the end of this class,
-    // call RegisterCallback for each of these methods
-
-    void OnWidgetValueChanged(const std::string &widgetName, double newValue) override;
-
-    // A midi device was added or removed
-    void OnMidiDeviceListChanged(std::vector<std::string> &inputs, std::vector<std::string> &outputs) override;
-
-    void OnWidgetCaptionChanged(const std::string &widgetName, const std::string &newCaption) override;
-
-    void OnSongChanged(int oldIndex, int newIndex) override;
-
-    void OnWidgetStateChanged(const std::string &widgetName, int newState) override;
-
     void Initialization() override;
+
+	void ListAvailableHandles();
 
     int RequestGPScriptFunctionSignatureList(GPScript_AllowedLocations location,
                                              ExternalAPI_GPScriptFunctionDefinition **list) override;
