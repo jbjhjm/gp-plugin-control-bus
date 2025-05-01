@@ -10,17 +10,34 @@ This extension aims to provide an alternative via a set of GPScript functions th
 
 Soon...
 
-## Setup compiler (Win with vscode)
+## Setup compiler 
 
 Install Visual Studio Build Tools with C++ desktop development workload and Components 
 If winget is set up correctly, you can install all using `winget install Microsoft.VisualStudio.2022.BuildTools --force --override "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK"` 
 
-vscode will only have correct Path env available to detect cl.exe if it is being started from visual studio CLI.
+## VS Code
+
+vscode must be started from VS command prompt to find needed tools in env.
 To do so, run "Developer Command Prompt for VS20XX". CLI should open. Execute `code x:\path\to\repo` to launch VS with C++ env.
 
-In vscode, run "Select IntelliSense Configuration", to see if a compiler was found.
+Run vscode command "Select IntelliSense Configuration", to see if a compiler was found.
 
-## How to build...
+To compile, open terminal and execute ./build.cmd.
+
+## How to build by CLI...
+
+### ... on Windows
+
+-   Make sure you have [CMake](https://cmake.org), [Git](https://git-scm.com) and a C(++) compiler installed.
+    You can get that for example by installing [Visual Studio](https://visualstudio.microsoft.com) with the _Desktop development with C++_ workload and the _Git for Windows_ component.
+-   Build (and install) the project via CMake.
+    For your convenience we have provided a `build.cmd` which contains all necessary commands:
+
+    ```bash
+    build.cmd
+    ```
+
+    **Make sure to run the script from the Visual Studio developer command prompt!**
 
 ### ... on macOS
 
@@ -43,16 +60,3 @@ In vscode, run "Select IntelliSense Configuration", to see if a compiler was fou
     ```bash
     ./build.sh
     ```
-
-### ... on Windows
-
--   Make sure you have [CMake](https://cmake.org), [Git](https://git-scm.com) and a C(++) compiler installed.
-    You can get that for example by installing [Visual Studio](https://visualstudio.microsoft.com) with the _Desktop development with C++_ workload and the _Git for Windows_ component.
--   Build (and install) the project via CMake.
-    For your convenience we have provided a `build.cmd` which contains all necessary commands:
-
-    ```bash
-    build.cmd
-    ```
-
-    **Make sure to run the script from the Visual Studio developer command prompt!**
