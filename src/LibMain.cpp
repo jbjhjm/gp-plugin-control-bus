@@ -25,48 +25,51 @@ const std::string XMLProductDescription =
     "</Library>";
 
 // List of panels
-std::vector<std::string> panelNames = {
-    "Red",
-    "Yellow",
-    "Blue",
-};
-std::vector<std::string> relativePanelLocations = {
-    "Red.gppanel",
-    "Yellow.gppanel",
-    "Blue.gppanel",
-};
+// std::vector<std::string> panelNames = {
+//     "Red",
+//     "Yellow",
+//     "Blue",
+// };
+// std::vector<std::string> relativePanelLocations = {
+//     "Red.gppanel",
+//     "Yellow.gppanel",
+//     "Blue.gppanel",
+// };
 
 std::string pathToMe; // This needs to be initialized from the initialization
                       // section of the LibMain class so it can be used in the
                       // standalone functions directly below
 
-int LibMain::GetPanelCount()
-{
-    return static_cast<int>(panelNames.size());
-}
+// int LibMain::GetPanelCount()
+// {
+//     return static_cast<int>(panelNames.size());
+// }
 
-std::string LibMain::GetPanelName(int index)
-{
-    std::string text;
-    if (index >= 0 && static_cast<std::size_t>(index) < panelNames.size())
-    {
-        text = panelNames[index];
-    }
+// std::string LibMain::GetPanelName(int index)
+// {
+//     std::string text;
+//     if (index >= 0 && static_cast<std::size_t>(index) < panelNames.size())
+//     {
+//         text = panelNames[index];
+//     }
 
-    return text;
-}
+//     return text;
+// }
 
-// Return panel layout in XML format
-std::string LibMain::GetPanelXML(int index)
-{
-    std::string text;
-    if (index >= 0 && static_cast<std::size_t>(index) < panelNames.size())
-    {
-        // We assume the panels are in the same folder as the library
-        GPUtils::loadTextFile(getPathToMe() + "/" + relativePanelLocations[index], text);
-    }
-    return text;
-}
+// // Return panel layout in XML format
+// std::string LibMain::GetPanelXML(int index)
+// {
+//     std::string text;
+//     if (index >= 0 && static_cast<std::size_t>(index) < panelNames.size())
+//     {
+//         // We assume the panels are in the same folder as the library
+//         GPUtils::loadTextFile(getPathToMe() + "/" + relativePanelLocations[index], text);
+//     }
+//     return text;
+// }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \name    Menu support
+/// \details 3 functions are used to implement menu actions: one returns number of avail items, second the labels at index, and third executes actions at index.
 
 // List of menu items
 std::vector<std::string> menuNames = {
@@ -112,105 +115,106 @@ void LibMain::InvokeMenu(int index)
         }
     }
 }
-void LibMain::OnModeChanged(int mode)
-{
-    consoleLog(std::string("Switching to mode: ") + ((mode == GP_SetlistMode) ? "Setlist" : "FrontBack"));
-}
 
-void LibMain::OnSwitchToPanelView()
-{
+// void LibMain::OnModeChanged(int mode)
+// {
+//     consoleLog(std::string("Switching to mode: ") + ((mode == GP_SetlistMode) ? "Setlist" : "FrontBack"));
+// }
 
-    consoleLog("Switching to panel view");
-    setPlayheadState(true);
+// void LibMain::OnSwitchToPanelView()
+// {
 
-    int count = getPluginParameterCount("Legend", false);
-    consoleLog(std::to_string(count));
+//     consoleLog("Switching to panel view");
+//     setPlayheadState(true);
 
-    std::string p1 = getPluginParameterName("Legend", 1, false);
-    consoleLog(p1);
-}
+//     int count = getPluginParameterCount("Legend", false);
+//     consoleLog(std::to_string(count));
 
-void LibMain::OnSwitchToWiringView()
-{
-    consoleLog("Switching to wiring view");
-    setPlayheadState(false);
+//     std::string p1 = getPluginParameterName("Legend", 1, false);
+//     consoleLog(p1);
+// }
 
-    setBPM(99);
-}
+// void LibMain::OnSwitchToWiringView()
+// {
+//     consoleLog("Switching to wiring view");
+//     setPlayheadState(false);
 
-void LibMain::OnGlobalPlayStateChanged(double playing)
-{
-    consoleLog(std::string("playing = ") + ((playing > 0.0) ? " true" : "false"));
+//     setBPM(99);
+// }
 
-    // switchToSetlistView();
-    // switchToWiringView();
+// void LibMain::OnGlobalPlayStateChanged(double playing)
+// {
+//     consoleLog(std::string("playing = ") + ((playing > 0.0) ? " true" : "false"));
 
-    int color = RGBAToColor(1, 0, 0, 0.5);
-    setWidgetFillColor("MyShape", color);
+//     // switchToSetlistView();
+//     // switchToWiringView();
 
-    double red, green, blue, alpha;
-    ColorToRGBA(color, red, green, blue, alpha);
-    consoleLog(std::to_string(alpha));
-}
+//     int color = RGBAToColor(1, 0, 0, 0.5);
+//     setWidgetFillColor("MyShape", color);
 
-void LibMain::OnWidgetValueChanged(const std::string &widgetName, double newValue)
-{
-    Ignore(widgetName);
-    Ignore(newValue);
+//     double red, green, blue, alpha;
+//     ColorToRGBA(color, red, green, blue, alpha);
+//     consoleLog(std::to_string(alpha));
+// }
 
-    // int noteNumber = (int)GPUtils::Scale(newValue, 0.0, 1.0, 36, 96);
-    // GPMidiMessage n = GPMidiMessage::makeNoteOnMessage(noteNumber, 64, 0);
-    // const std::string device = "MIDI Monitor (Untitled)";
-    // sendMidiMessageToMidiOutDevice(device, n);
+// void LibMain::OnWidgetValueChanged(const std::string &widgetName, double newValue)
+// {
+//     Ignore(widgetName);
+//     Ignore(newValue);
 
-    std::string caption = getWidgetCaption("abc");
-    consoleLog("caption: " + caption);
-    std::string value = getWidgetTextValue("abc");
-    consoleLog("value: " + value);
+//     // int noteNumber = (int)GPUtils::Scale(newValue, 0.0, 1.0, 36, 96);
+//     // GPMidiMessage n = GPMidiMessage::makeNoteOnMessage(noteNumber, 64, 0);
+//     // const std::string device = "MIDI Monitor (Untitled)";
+//     // sendMidiMessageToMidiOutDevice(device, n);
 
-    // consoleLog(newValue > 0.5 ? "Yes" : "No");
-    // if (newValue > 0.5)
-    // {
-    //     if (widgetName == "abc")
-    //     {
-    //         next();
-    //     }
-    //     else
-    //     {
-    //         previous();
-    //     }
-    // }
-}
+//     std::string caption = getWidgetCaption("abc");
+//     consoleLog("caption: " + caption);
+//     std::string value = getWidgetTextValue("abc");
+//     consoleLog("value: " + value);
 
-void LibMain::OnMidiDeviceListChanged(std::vector<std::string> &inputs, std::vector<std::string> &outputs)
-{
-    for (std::size_t i = 0; i < inputs.size(); i++)
-    {
-        std::string &name = inputs[i];
-        consoleLog("Input found: " + name);
-    }
+//     // consoleLog(newValue > 0.5 ? "Yes" : "No");
+//     // if (newValue > 0.5)
+//     // {
+//     //     if (widgetName == "abc")
+//     //     {
+//     //         next();
+//     //     }
+//     //     else
+//     //     {
+//     //         previous();
+//     //     }
+//     // }
+// }
 
-    Ignore(outputs);
-}
+// void LibMain::OnMidiDeviceListChanged(std::vector<std::string> &inputs, std::vector<std::string> &outputs)
+// {
+//     for (std::size_t i = 0; i < inputs.size(); i++)
+//     {
+//         std::string &name = inputs[i];
+//         consoleLog("Input found: " + name);
+//     }
 
-void LibMain::OnWidgetCaptionChanged(const std::string &widgetName, const std::string &newCaption)
-{
-    Ignore(widgetName);
-    consoleLog("Widget caption changed: " + newCaption);
-}
+//     Ignore(outputs);
+// }
 
-void LibMain::OnSongChanged(int oldIndex, int newIndex)
-{
-    Ignore(oldIndex);
-    consoleLog("Song changed from C++ example");
-    std::string name = getSongName(newIndex);
-    consoleLog("New song is called " + name);
-}
+// void LibMain::OnWidgetCaptionChanged(const std::string &widgetName, const std::string &newCaption)
+// {
+//     Ignore(widgetName);
+//     consoleLog("Widget caption changed: " + newCaption);
+// }
 
-void LibMain::OnWidgetStateChanged(const std::string &widgetName, int newState)
-{
-    consoleLog("Widget " + widgetName + ": " + ((newState == 0) ? "created" : "removed"));
-}
+// void LibMain::OnSongChanged(int oldIndex, int newIndex)
+// {
+//     Ignore(oldIndex);
+//     consoleLog("Song changed from C++ example");
+//     std::string name = getSongName(newIndex);
+//     consoleLog("New song is called " + name);
+// }
+
+// void LibMain::OnWidgetStateChanged(const std::string &widgetName, int newState)
+// {
+//     consoleLog("Widget " + widgetName + ": " + ((newState == 0) ? "created" : "removed"));
+// }
 
 void LibMain::Initialization()
 {
@@ -220,21 +224,21 @@ void LibMain::Initialization()
 
     // Finally, register all the methods that you are going to actually use,
     // i.e, the ones you declared above as override
-    registerCallback("OnSongChanged");
-    registerCallback("OnStatusChanged");
-    registerCallback("OnMidiDeviceListChanged");
-    registerCallback("OnWidgetValueChanged");
-    registerCallback("OnWidgetStateChanged");
-    registerCallback("OnWidgetCaptionChanged");
-    registerCallback("OnGlobalPlayStateChanged");
-    registerCallback("OnModeChanged");
-    registerCallback("OnSwitchToPanelView");
-    registerCallback("OnSwitchToWiringView");
-    registerCallback("OnTempoChanged");
-    registerCallback("OnSetlistChanged");
+    // registerCallback("OnSongChanged");
+    // registerCallback("OnStatusChanged");
+    // registerCallback("OnMidiDeviceListChanged");
+    // registerCallback("OnWidgetValueChanged");
+    // registerCallback("OnWidgetStateChanged");
+    // registerCallback("OnWidgetCaptionChanged");
+    // registerCallback("OnGlobalPlayStateChanged");
+    // registerCallback("OnModeChanged");
+    // registerCallback("OnSwitchToPanelView");
+    // registerCallback("OnSwitchToWiringView");
+    // registerCallback("OnTempoChanged");
+    // registerCallback("OnSetlistChanged");
     registerCallback("OnRackspaceActivated");
-    listenForWidget("abc", true);
-    listenForWidget("def", true);
+    // listenForWidget("abc", true);
+    // listenForWidget("def", true);
 
     consoleLog("path to library " + getPathToMe());
 }
