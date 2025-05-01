@@ -91,6 +91,8 @@ class LibMain : public gigperformer::sdk::GigPerformerAPI
 
     void Initialization() override;
 
+	void ListAvailableHandles();
+
     int RequestGPScriptFunctionSignatureList(GPScript_AllowedLocations location,
                                              ExternalAPI_GPScriptFunctionDefinition **list) override;
 

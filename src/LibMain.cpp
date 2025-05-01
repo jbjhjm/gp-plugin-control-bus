@@ -79,6 +79,7 @@ std::vector<std::string> menuNames = {
     "Show Front Panels",
     "Show Back Wiring",
     "Show Setlists",
+    "List available Handles",
 };
 
 int LibMain::GetMenuCount()
@@ -112,12 +113,34 @@ void LibMain::InvokeMenu(int index)
         case 2:
             switchToSetlistView();
             break;
+        case 3:
+			ListAvailableHandles();
+            break;
 
         default:
             break;
         }
     }
 }
+void LibMain::ListAvailableHandles()
+{
+	std::vector<std::string> list;
+
+    consoleLog("ListAvailableHandles");
+
+	getPluginList(list, false);
+	scriptLog("Plugin Handles in current rackspace:", true);
+	for (int i = 0; i < list.size(); i++) {
+		scriptLog(list[i], false);
+	}
+
+	getWidgetList(list, false);
+	scriptLog("Widget Handles in current rackspace:", false);
+	for (int i = 0; i < list.size(); i++) {
+		scriptLog(list[i], false);
+	}
+}
+
 
 // void LibMain::OnModeChanged(int mode)
 // {
