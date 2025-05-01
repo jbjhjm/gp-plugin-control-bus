@@ -14,89 +14,45 @@ class LibMain : public gigperformer::sdk::GigPerformerAPI
 {
 
 	public:
-	//   static LibMain* getInstancePointer()
-	//   {
-	// 	  return &getInstanceImpl();
-	//   }
-	//   static LibMain& getInstance()
-	//   {
-	// 	  return getInstanceImpl();
-	//   }
-	//   static void init(LibraryHandle handle) // enable moving in
-	//   {
-	// 	  getInstanceImpl(&handle);
-	//   }
-	
-	  // static LibMain& getInstance(LibraryHandle handle)
-	  //     {
-	  //         // Instantiated on first use.
-	  // 		// Guaranteed to be destroyed.
-	  //         static LibMain instance {handle}; 
-	  //         return instance;
-	  //     }
-  
-	//   private:
-  
-		//   static LibMain* getInstanceImpl(LibraryHandle* const handle = nullptr)
-		//   {
-		// 	  static LibMain instance{ handle };
-		// 	  return &instance;
-		//   }
 
-			static LibMain* instance;
-  
-			static void storeInstance(LibMain* incoming)
-			{
-				instance = incoming;
-			}
-			static LibMain* getInstance()
-			{
-				return (instance);
-			}
+		static void storeInstance(LibMain* incoming)
+		{
+			instance = incoming;
+		}
+		static LibMain* getInstance()
+		{
+			return (instance);
+		}
 
+	private:
 
+		static LibMain* instance;
 
+	protected:
+		int GetMenuCount() override;
+		std::string GetMenuName(int index) override;
+		void InvokeMenu(int itemIndex) override;
 
-  protected:
-    // int GetPanelCount() override;
-    // std::string GetPanelName(int index) override;
-    // std::string GetPanelXML(int index) override;
+	public:
+		explicit LibMain(LibraryHandle handle) : GigPerformerAPI(handle)
+		{
+		}
 
-    // These are for creating menu items in Gig Performer that can be used to
-    // trigger external functions provided by the extension developer
-    int GetMenuCount() override;
-    std::string GetMenuName(int index) override;
-    void InvokeMenu(int itemIndex) override;
+		~LibMain() override
+		{
+		}
 
-  public:
-    // These must be here but no need to do anything unless you want extra behavior
-    explicit LibMain(LibraryHandle handle) : GigPerformerAPI(handle)
-    {
-		// if (handle == nullptr) alert( "LibMain was constructed without calling LibMain::Init!" );
-		// else alert("Lib main constructed WITH handle");
-    }
+		void OnRackspaceActivated() override
+		{
+			consoleLog("Rackspace activated");
+		}
 
-    ~LibMain() override
-    {
-    }
+		void Initialization() override;
 
-    // void OnStatusChanged(GPStatusType status) override
-    // {
-    //     consoleLog("Gig status changed to " + std::to_string(status));
-    // }
+		void ListAvailableHandles();
 
-    void OnRackspaceActivated() override
-    {
-        consoleLog("Rackspace activated");
-    }
+		int RequestGPScriptFunctionSignatureList(GPScript_AllowedLocations location,
+												ExternalAPI_GPScriptFunctionDefinition **list) override;
 
-    void Initialization() override;
-
-	void ListAvailableHandles();
-
-    int RequestGPScriptFunctionSignatureList(GPScript_AllowedLocations location,
-                                             ExternalAPI_GPScriptFunctionDefinition **list) override;
-
-    // This MUST be defined in your class
-    std::string GetProductDescription() override;
+		std::string GetProductDescription() override;
 };
