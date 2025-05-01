@@ -69,7 +69,7 @@ std::string pathToMe; // This needs to be initialized from the initialization
 //     return text;
 // }
 
-const LibMain* LibMain::instance = NULL;
+LibMain* LibMain::instance = NULL;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// \name    Menu support
@@ -293,16 +293,25 @@ int LibMain::RequestGPScriptFunctionSignatureList(GPScript_AllowedLocations loca
 
 namespace gigperformer
 {
-namespace sdk
-{
+	namespace sdk
+	{
 
-GigPerformerAPI *CreateGPExtension(LibraryHandle handle)
-{
-	// LibMain::init(handle);
-	LibMain* instance = new LibMain(handle);
-	LibMain::storeInstance(instance);
-    return instance;
-}
+		GigPerformerAPI *CreateGPExtension(LibraryHandle handle)
+		{
+			/**
+			 * seems that the function is called TWO times:
+			 * first with a nullptr handle, when GP only checks for some metadata.
+			 * second, when GP sees that it should be enabled - then a handle is being passed.
+			 */
+			// LibMain::init(handle);
+			if(handle == nullptr) {
+				return new LibMain(nullptr);
+			} else {
+				LibMain* instance = new LibMain(handle);
+				LibMain::storeInstance(instance);
+				return instance;
+			}
+		}
 
-} // namespace sdk
+	} // namespace sdk
 } // namespace gigperformer

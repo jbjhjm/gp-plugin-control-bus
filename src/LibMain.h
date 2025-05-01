@@ -43,16 +43,16 @@ class LibMain : public gigperformer::sdk::GigPerformerAPI
 		// 	  return &instance;
 		//   }
 
-			static const LibMain* instance;
+			static LibMain* instance;
   
-		  static void storeInstance(LibMain* incoming)
-		  {
-			  instance = incoming;
-		  }
-		  static const LibMain& getInstance()
-		  {
-			  return *LibMain::instance;
-		  }
+			static void storeInstance(LibMain* incoming)
+			{
+				instance = incoming;
+			}
+			static LibMain* getInstance()
+			{
+				return (instance);
+			}
 
 
 
@@ -72,7 +72,8 @@ class LibMain : public gigperformer::sdk::GigPerformerAPI
     // These must be here but no need to do anything unless you want extra behavior
     explicit LibMain(LibraryHandle handle) : GigPerformerAPI(handle)
     {
-		if (handle == nullptr) alert( "LibMain was constructed without calling LibMain::Init!" );
+		// if (handle == nullptr) alert( "LibMain was constructed without calling LibMain::Init!" );
+		// else alert("Lib main constructed WITH handle");
     }
 
     ~LibMain() override
