@@ -14,7 +14,7 @@ extern "C" void addtwo(GPRuntimeEngine *vm)
     GP_VM_PushInteger(vm, a + b);
 }
 
-extern "C" void PCB_loadGPPreset(GPRuntimeEngine *vm)
+extern "C" void GPCB_loadGPPreset(GPRuntimeEngine *vm)
 {
 	
 	char buffer[100];
@@ -24,11 +24,11 @@ extern "C" void PCB_loadGPPreset(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
-	LibMain::getInstance()->scriptLog("PCB_loadGPPreset " + pluginHandle + " - " + presetName, true);
+	LibMain::getInstance()->scriptLog("GPCB_loadGPPreset " + pluginHandle + " - " + presetName, true);
 
 }
 
-extern "C" void PCB_setPluginParam(GPRuntimeEngine *vm)
+extern "C" void GPCB_setPluginParam(GPRuntimeEngine *vm)
 {
 
 	double paramValue = GP_VM_PopDouble(vm);
@@ -43,11 +43,11 @@ extern "C" void PCB_setPluginParam(GPRuntimeEngine *vm)
 	char paramValueString[20];
 	gcvt(paramValue, 10, paramValueString);
 
-	LibMain::getInstance()->scriptLog("PCB_setPluginParam " + pluginHandle + " - " + paramName + "=" + paramValueString, true);
+	LibMain::getInstance()->scriptLog("GPCB_setPluginParam " + pluginHandle + " - " + paramName + "=" + paramValueString, true);
 
 }
 
-extern "C" void PCB_setPluginBypass(GPRuntimeEngine *vm)
+extern "C" void GPCB_setPluginBypass(GPRuntimeEngine *vm)
 {
 
 	double paramValue = GP_VM_PopDouble(vm);
@@ -56,11 +56,11 @@ extern "C" void PCB_setPluginBypass(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
-	LibMain::getInstance()->scriptLog("PCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.0 ? "true" : "false"), true);
+	LibMain::getInstance()->scriptLog("GPCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), true);
 
 }
 
-extern "C" void PCB_setWidgetValue(GPRuntimeEngine *vm)
+extern "C" void GPCB_setWidgetValue(GPRuntimeEngine *vm)
 {
 
 	double value = GP_VM_PopDouble(vm);
@@ -72,11 +72,11 @@ extern "C" void PCB_setWidgetValue(GPRuntimeEngine *vm)
 	char valueString[20];
 	gcvt(value, 10, valueString);
 
-	LibMain::getInstance()->scriptLog("PCB_setWidgetValue " + widgetHandle + " = " + valueString, true);
+	LibMain::getInstance()->scriptLog("GPCB_setWidgetValue " + widgetHandle + " = " + valueString, true);
 
 }
 
-extern "C" void PCB_setWidgetCaption(GPRuntimeEngine *vm)
+extern "C" void GPCB_setWidgetCaption(GPRuntimeEngine *vm)
 {
 	
 	char buffer[100];
@@ -87,7 +87,7 @@ extern "C" void PCB_setWidgetCaption(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string widgetHandle = buffer;
 
-	LibMain::getInstance()->scriptLog("PCB_setWidgetCaption " + widgetHandle + " = " + caption, true);
+	LibMain::getInstance()->scriptLog("GPCB_setWidgetCaption " + widgetHandle + " = " + caption, true);
 
 }
 
@@ -115,12 +115,12 @@ extern "C" void PCB_setWidgetCaption(GPRuntimeEngine *vm)
 // }
 
 ExternalAPI_GPScriptFunctionDefinition GPScriptFunctionsList[] = {
-    {"AddTwo", "a : integer, b :integer", "Returns Integer", "Add the integers", addtwo},
-    {"PCB_loadGPPreset", "handle : string, preset : string", "Returns void", "Load GPPreset for a plugin", PCB_loadGPPreset},
-    {"PCB_setPluginParam", "handle : string, param : string, value : double", "Returns void", "Set param for a plugin", PCB_setPluginParam},
-    {"PCB_setPluginBypass", "handle : string, value : double", "Returns void", "Set bypass for a plugin", PCB_setPluginBypass},
-    {"PCB_setWidgetValue", "handle : string, value : double", "Returns void", "Set value of a Widget", PCB_setWidgetValue},
-    {"PCB_setWidgetCaption", "handle : string, caption : string", "Returns void", "Set caption of a Widget", PCB_setWidgetCaption},
+    {"AddTwo", 				"a : integer, b :integer", 							"Returns Integer", "Add the integers", addtwo},
+    {"loadGPPreset", 		"handle : string, preset : string", 				"", "Load GPPreset for a plugin", GPCB_loadGPPreset},
+    {"setPluginParam", 		"handle : string, param : string, value : double", 	"", "Set param for a plugin", GPCB_setPluginParam},
+    {"setPluginBypass", 	"handle : string, value : double", 					"", "Set bypass for a plugin", GPCB_setPluginBypass},
+    {"setWidgetValue", 		"handle : string, value : double", 					"", "Set value of a Widget", GPCB_setWidgetValue},
+    {"setWidgetCaption", 	"handle : string, caption : string", 				"", "Set caption of a Widget", GPCB_setWidgetCaption},
     // {"SubtractTwo", "a : integer,b :integer", "Returns Integer", "Subtract the integers", subtracttwo},
     // {"Increment", "a : integer", "Returns Integer", "Increment incoming value", Increment},
     // {"DupString", "a : String", "Returns String", "Return with the string twice", DupString},

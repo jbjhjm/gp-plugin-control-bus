@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 
 set (PROJECT_VERSION "0.0.1")
-set (PROJECT_NAME "gp-plugin-control-bus")
-set (PROJECT_TITLE "GP Plugin Control Bus")
+set (PROJECT_NAME "GPCB")
+set (PROJECT_TITLE "GP Control Bus")
 string(TIMESTAMP TODAY "%d/%m/%Y")
 set (PROJECT_BUILD_DATE ${TODAY})
 
