@@ -1,9 +1,9 @@
 #pragma once
 
-#include "gigperformer/sdk/GPMidiMessages.h"
-#include "gigperformer/sdk/GPUtils.h"
-#include "gigperformer/sdk/GigPerformerAPI.h"
-#include "gigperformer/sdk/types.h"
+#include "interfaces/CPP/GPMidiMessages.h"
+#include "interfaces/CPP/GPUtils.h"
+#include "interfaces/CPP/GigPerformerAPI.h"
+// #include "interfaces/C/GPTypes.h"
 #include "LibMain.h"
 #include <stdexcept>
 

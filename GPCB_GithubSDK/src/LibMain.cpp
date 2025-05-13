@@ -3,7 +3,7 @@
 #include "GPScriptFunctions.h"
 #include <cstdint>
 
-using GPUtils = gigperformer::sdk::GPUtils;
+// using GPUtils = gigperformer::sdk::GPUtils;
 
 
 // define an XML string describing your product

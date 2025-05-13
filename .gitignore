@@ -7,3 +7,5 @@
 
 # Build output
 build/
+GPCB_GithubSDK/build/
+GPCB_localSDK/build/
