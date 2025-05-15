@@ -29,7 +29,7 @@ LogWindow *LogWindow::sfInstance = nullptr;
 class MyDocumentWindow : public juce::DocumentWindow
 {
   public:
-    MyDocumentWindow() : DocumentWindow("HelloGP-JUCE", juce::Colours::black, DocumentWindow::allButtons, true)
+    MyDocumentWindow() : DocumentWindow("GPCB Log", juce::Colours::black, DocumentWindow::allButtons, true)
     {
     }
 
@@ -148,11 +148,10 @@ void LogWindow::initialize()
         {
             sfInstance = new LogWindow();
             sfInstance->fWindow->setTopLeftPosition(100, 100);
-            LogWindow::log("HelloGP-JUCE library loaded and initialized.\n");
+            LogWindow::log("GPCB Log Window initialized.\n");
         }
 
         jassert(sfInstance != nullptr);
-        sfInstance->fWindow->setVisible(true);
     });
 }
 

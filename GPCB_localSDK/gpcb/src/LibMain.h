@@ -69,10 +69,26 @@ class LibMain : public GigPerformerAPI
 		boolean assertPluginExists(std::string handle, bool global);
 		boolean assertWidgetExists(std::string handle);
 		
-		void OnRackspaceActivated() override
-		{}
+		void OnOpen() override {
+			scriptLog("Extension: OnOpen",true);
+			LogWindow::initialize();
+		}
 
-		void Initialization() override;
+		void OnClose() override {
+			LogWindow::finalize();
+		}
+
+		void OnRackspaceActivated() override {
+			scriptLog("Extension: OnRackspaceActivated. ID: " + std::to_string(getCurrentRackspaceIndex()), true);
+		}
+
+		void Initialization() override
+		{
+			// Do any initialization that you need
+			registerCallback("OnRackspaceActivated");
+			registerCallback("OnOpen");
+			registerCallback("OnClose");
+		}
 
 		void ListAvailableHandles();
 

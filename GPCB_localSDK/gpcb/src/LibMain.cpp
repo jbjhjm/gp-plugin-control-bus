@@ -85,21 +85,6 @@ void LibMain::ListAvailableHandles()
 	for (int i = 0; i < list.size(); i++) {
 		scriptLog(list[i], false);
 	}
-
-	// getWidgetList(list, false);
-	// scriptLog("Widget Handles in current rackspace:", false);
-	// for (int i = 0; i < list.size(); i++) {
-	// 	scriptLog(list[i], false);
-	// }
-}
-
-void LibMain::Initialization()
-{
-    // Do any initialization that you need
-
-    // register all the methods that you are going to actually use,
-    // listenForWidget("abc", true);
-    registerCallback("OnRackspaceActivated");
 }
 
 void  LibMain::logToWindow(const std::string & message, bool openLogWindow)
