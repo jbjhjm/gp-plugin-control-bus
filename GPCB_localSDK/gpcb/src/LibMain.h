@@ -63,6 +63,7 @@ class LibMain : public GigPerformerAPI
 		}
 
 		void setDebug(boolean state); 
+
 		boolean assertPluginExists(std::string handle);
 		boolean assertWidgetExists(std::string handle);
 		

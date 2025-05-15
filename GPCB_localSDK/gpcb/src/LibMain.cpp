@@ -74,17 +74,23 @@ void LibMain::ListAvailableHandles()
 
     consoleLog("ListAvailableHandles");
 
+	getPluginList(list, true);
+	scriptLog("Plugin Handles in global rackspace:", true);
+	for (int i = 0; i < list.size(); i++) {
+		scriptLog(list[i], false);
+	}
+
 	getPluginList(list, false);
 	scriptLog("Plugin Handles in current rackspace:", true);
 	for (int i = 0; i < list.size(); i++) {
 		scriptLog(list[i], false);
 	}
 
-	getWidgetList(list, false);
-	scriptLog("Widget Handles in current rackspace:", false);
-	for (int i = 0; i < list.size(); i++) {
-		scriptLog(list[i], false);
-	}
+	// getWidgetList(list, false);
+	// scriptLog("Widget Handles in current rackspace:", false);
+	// for (int i = 0; i < list.size(); i++) {
+	// 	scriptLog(list[i], false);
+	// }
 }
 
 void LibMain::Initialization()

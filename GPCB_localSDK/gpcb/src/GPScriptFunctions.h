@@ -24,10 +24,14 @@ extern "C" void GPCB_loadGPPreset(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
+	bool global = GP_VM_PopBoolean(vm);
+
 	LibMain* gpcb = LibMain::getInstance();
-	if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset " + pluginHandle + " - " + presetName, false);
+	if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset " + pluginHandle + " - " + presetName, global);
 	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
-	gpcb->loadGPPreset(pluginHandle, presetName, false);
+	bool success = gpcb->loadGPPreset(pluginHandle, presetName, global);
+	std::string successInfo = (success ? "yes" : "no");
+	if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset successful? " + successInfo, global);
 
 }
 
@@ -42,13 +46,15 @@ extern "C" void GPCB_setPluginParam(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
+	bool global = GP_VM_PopBoolean(vm);
+
 	char paramValueString[20];
 	gcvt(paramValue, 10, paramValueString);
 
 	LibMain* gpcb = LibMain::getInstance();
 	if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginParam " + pluginHandle + " - " + std::to_string(paramNumber) + "=" + paramValueString, false);
 	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
-	gpcb->setPluginParameter(pluginHandle, paramNumber, paramValue, false);
+	gpcb->setPluginParameter(pluginHandle, paramNumber, paramValue, global);
 
 }
 
@@ -61,10 +67,12 @@ extern "C" void GPCB_setPluginBypass(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
+	bool global = GP_VM_PopBoolean(vm);
+
 	LibMain* gpcb = LibMain::getInstance();
 	if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
 	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
-	gpcb->setPluginParameter(pluginHandle, -2, paramValue, false);
+	gpcb->setPluginParameter(pluginHandle, -2, paramValue, global);
 
 }
 
@@ -77,10 +85,12 @@ extern "C" void GPCB_showPlugin(GPRuntimeEngine *vm)
     GP_VM_PopString(vm, buffer, 100);
     std::string pluginHandle = buffer;
 
+	bool global = GP_VM_PopBoolean(vm);
+
 	LibMain* gpcb = LibMain::getInstance();
 	if(gpcb->debug) gpcb->scriptLog("GPCB_showPlugin " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
 	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
-	gpcb->setPluginParameter(pluginHandle, -1, paramValue, false);
+	gpcb->setPluginParameter(pluginHandle, -1, paramValue, global);
 
 }
 
@@ -122,11 +132,11 @@ extern "C" void GPCB_setWidgetCaption(GPRuntimeEngine *vm)
 }
 
 ExternalAPI_GPScriptFunctionDefinition GPScriptFunctionsList[] = {
-    {"debug", 				"enable : boolean", 								"", "Enable debug logging", GPCB_debug},
-    {"loadGPPreset", 		"handle : string, preset : string", 				"", "Load GPPreset for a plugin", GPCB_loadGPPreset},
-    {"setPluginParam", 		"handle : string, paramIndex : int, value : double","", "Set param for a plugin", GPCB_setPluginParam},
-    {"setPluginBypass", 	"handle : string, value : double", 					"", "Set bypass for a plugin", GPCB_setPluginBypass},
-    {"showPlugin",		 	"handle : string, value : double", 					"", "Show/Hide plugin", GPCB_showPlugin},
-    {"setWidgetValue", 		"handle : string, value : double", 					"", "Set value of a Widget", GPCB_setWidgetValue},
-    {"setWidgetCaption", 	"handle : string, caption : string", 				"", "Set caption of a Widget", GPCB_setWidgetCaption},
+    {"debug", 				"enable : boolean", 													"", "Enable debug logging", GPCB_debug},
+    {"loadGPPreset", 		"global : boolean, handle : string, preset : string", 					"", "Load GPPreset for a plugin", GPCB_loadGPPreset},
+    {"setPluginParam", 		"global : boolean, handle : string, paramIndex : int, value : double",	"", "Set param for a plugin", GPCB_setPluginParam},
+    {"setPluginBypass", 	"global : boolean, handle : string, value : double", 					"", "Set bypass for a plugin", GPCB_setPluginBypass},
+    {"showPlugin",		 	"global : boolean, handle : string, value : double", 					"", "Show/Hide plugin", GPCB_showPlugin},
+    {"setWidgetValue", 		"handle : string, value : double", 										"", "Set value of a Widget", GPCB_setWidgetValue},
+    {"setWidgetCaption", 	"handle : string, caption : string", 									"", "Set caption of a Widget", GPCB_setWidgetCaption},
 };

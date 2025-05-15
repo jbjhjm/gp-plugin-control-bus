@@ -12,9 +12,11 @@ cmake --build .
 
 ::All going well, you should now have a DLL in the Debug folder
 ::So now copy it to the location where GP can find it
+:: Path is different due to JUCE setup!
+:: https://forum.juce.com/t/cmake-generating-a-strange-postfix-entitled-artefacts/41443/2
 
 mkdir "C:\Users\Public\Documents\Gig Performer\Extensions"
-copy Debug\*.dll "%PUBLIC%\Documents\Gig Performer\Extensions"
+copy GPCB_artefacts\Debug\*.dll "%PUBLIC%\Documents\Gig Performer\Extensions"
 
 ::For RELEASE build please replace the "Debug" folder reference with "Release"
 
