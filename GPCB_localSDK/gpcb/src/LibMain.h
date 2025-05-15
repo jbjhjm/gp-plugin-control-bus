@@ -6,6 +6,7 @@
 // #include <interfaces/CPP/GPMidiMessages.h>
 // #include "interfaces/C/GPTypes.h"
 #include <windows.h>
+#include <LogWindow.h>
 
 
 // define an XML string describing your product
@@ -62,6 +63,7 @@ class LibMain : public GigPerformerAPI
 		{
 		}
 
+		void logToWindow(const std::string & message, bool openLogWindow);
 		void setDebug(boolean state); 
 
 		boolean assertPluginExists(std::string handle);

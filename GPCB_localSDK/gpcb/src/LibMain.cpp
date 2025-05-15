@@ -102,6 +102,12 @@ void LibMain::Initialization()
     registerCallback("OnRackspaceActivated");
 }
 
+void  LibMain::logToWindow(const std::string & message, bool openLogWindow)
+{
+	LogWindow::showWindow();
+	LogWindow::log("\n"+message);
+}
+
 void LibMain::setDebug(boolean state) 
 {
 	debug = state;
