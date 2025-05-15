@@ -72,16 +72,25 @@ void LibMain::ListAvailableHandles()
 {
 	std::vector<std::string> list;
 
-    consoleLog("ListAvailableHandles");
+    logToWindow("ListAvailableHandles", true);
 
 	getPluginList(list, true);
-	scriptLog("Plugin Handles in global rackspace:", true);
+	logToWindow("Plugin Handles in global rackspace", false);
+	logToWindow("===================================", false);
 	for (int i = 0; i < list.size(); i++) {
-		scriptLog(list[i], false);
+		logToWindow(list[i], false);
 	}
 
 	getPluginList(list, false);
-	scriptLog("Plugin Handles in current rackspace:", true);
+	logToWindow("Plugin Handles in current rackspace", false);
+	logToWindow("===================================", false);
+	for (int i = 0; i < list.size(); i++) {
+		logToWindow(list[i], false);
+	}
+
+	getWidgetList(list, false);
+	scriptLog("Widget Handles (current rackspace?)", false);
+	scriptLog("===================================", false);
 	for (int i = 0; i < list.size(); i++) {
 		scriptLog(list[i], false);
 	}
@@ -89,8 +98,8 @@ void LibMain::ListAvailableHandles()
 
 void  LibMain::logToWindow(const std::string & message, bool openLogWindow)
 {
-	LogWindow::showWindow();
-	LogWindow::log("\n"+message);
+	if(openLogWindow) LogWindow::showWindow();
+	LogWindow::log(message);
 }
 
 void LibMain::setDebug(boolean state) 
