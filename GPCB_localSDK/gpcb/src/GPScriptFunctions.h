@@ -6,6 +6,7 @@
 // #include "interfaces/C/GPTypes.h"
 #include "LibMain.h"
 #include <stdexcept>
+#include <juce_core/juce_core.h>
 
 
 extern "C" void GPCB_debug(GPRuntimeEngine *vm)
@@ -26,12 +27,14 @@ extern "C" void GPCB_loadGPPreset(GPRuntimeEngine *vm)
 
 	bool global = GP_VM_PopBoolean(vm);
 
-	LibMain* gpcb = LibMain::getInstance();
-	if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset " + pluginHandle + " - " + presetName, global);
-	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
-	bool success = gpcb->loadGPPreset(pluginHandle, presetName, global);
-	std::string successInfo = (success ? "yes" : "no");
-	if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset successful? " + successInfo, global);
+	juce::MessageManager::getInstance()->callAsync([pluginHandle, presetName, global]() {
+		LibMain* gpcb = LibMain::getInstance();
+		if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset " + pluginHandle + " - " + presetName, global);
+		if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
+		bool success = gpcb->loadGPPreset(pluginHandle, presetName, global);
+		std::string successInfo = (success ? "yes" : "no");
+		if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset successful? " + successInfo, global);
+    });
 
 }
 
