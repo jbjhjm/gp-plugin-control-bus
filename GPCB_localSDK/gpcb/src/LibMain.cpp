@@ -113,9 +113,9 @@ void LibMain::setDebug(boolean state)
 	debug = state;
 }
 
-boolean LibMain::assertPluginExists(std::string handle)
+boolean LibMain::assertPluginExists(std::string handle, bool global)
 {
-	boolean exists = pluginExists(handle, false);
+	boolean exists = pluginExists(handle, global);
 	if(!exists) {
 		scriptLog("MISSING PLUGIN HANDLE: "+handle, true);
 	}

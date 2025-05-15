@@ -66,7 +66,7 @@ class LibMain : public GigPerformerAPI
 		void logToWindow(const std::string & message, bool openLogWindow);
 		void setDebug(boolean state); 
 
-		boolean assertPluginExists(std::string handle);
+		boolean assertPluginExists(std::string handle, bool global);
 		boolean assertWidgetExists(std::string handle);
 		
 		void OnRackspaceActivated() override

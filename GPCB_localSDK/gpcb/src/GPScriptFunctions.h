@@ -56,7 +56,7 @@ extern "C" void GPCB_setPluginParam(GPRuntimeEngine *vm)
 
 	LibMain* gpcb = LibMain::getInstance();
 	if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginParam " + pluginHandle + " - " + std::to_string(paramNumber) + "=" + paramValueString, false);
-	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
+	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
 	gpcb->setPluginParameter(pluginHandle, paramNumber, paramValue, global);
 
 }
@@ -74,7 +74,7 @@ extern "C" void GPCB_setPluginBypass(GPRuntimeEngine *vm)
 
 	LibMain* gpcb = LibMain::getInstance();
 	if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
-	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
+	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
 	gpcb->setPluginParameter(pluginHandle, -2, paramValue, global);
 
 }
@@ -92,7 +92,7 @@ extern "C" void GPCB_showPlugin(GPRuntimeEngine *vm)
 
 	LibMain* gpcb = LibMain::getInstance();
 	if(gpcb->debug) gpcb->scriptLog("GPCB_showPlugin " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
-	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle);
+	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
 	gpcb->setPluginParameter(pluginHandle, -1, paramValue, global);
 
 }
