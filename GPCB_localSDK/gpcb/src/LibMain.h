@@ -44,7 +44,7 @@ class LibMain : public GigPerformerAPI
 			return (instance);
 		}
 		
-		boolean debug = true;
+		boolean debug = false;
 
 	private:
 
@@ -77,7 +77,7 @@ class LibMain : public GigPerformerAPI
 		boolean assertWidgetExists(std::string handle);
 		
 		void OnOpen() override {
-			scriptLog("Extension: OnOpen",true);
+			if(debug) scriptLog("Extension: OnOpen",true);
 			LogWindow::initialize();
 		}
 		

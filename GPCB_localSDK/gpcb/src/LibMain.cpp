@@ -102,10 +102,10 @@ void LibMain::ListAvailableHandles()
 	}
 
 	getWidgetList(list, false);
-	scriptLog("Widget Handles (current rackspace?)", false);
-	scriptLog("===================================", false);
+	logToWindow("Widget Handles (current rackspace?)", false);
+	logToWindow("===================================", false);
 	for (int i = 0; i < list.size(); i++) {
-		scriptLog(list[i], false);
+		logToWindow(list[i], false);
 	}
 }
 
