@@ -12,6 +12,14 @@ set (PROJECT_VERSION "0.0.1")
 set (PROJECT_NAME "GPCB")
 set (PROJECT_TITLE "GP Control Bus")
 
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED YES)
+set(CMAKE_C_EXTENSIONS NO)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_EXTENSIONS NO)
+
 # Set the variable PROJ_NAME to whatever your library's name is, PROJECT_VERSION should be a version string like "0.1"
 project(${PROJECT_NAME} VERSION ${PROJECT_VERSION})
 
@@ -31,11 +39,12 @@ add_library(${PROJECT_NAME} SHARED)
 _juce_initialise_target(${PROJECT_NAME} ${ARGN})
 
 target_sources(${PROJECT_NAME}
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/LibMain.cpp
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/LibMain.h
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/GPScriptFunctions.h
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/Logwindow.cpp
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/Logwindow.h
+PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/MultiAsyncUpdater.h
+PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/Logwindow.cpp
+PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/Logwindow.h
+PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/LibMain.cpp
+PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/LibMain.h
+PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/GPScriptFunctions.h
   
    PUBLIC ${GP_SDK_ROOT}/interfaces/CPP/GPUtils.cpp
    PUBLIC ${GP_SDK_ROOT}/interfaces/CPP/GigPerformerFunctions.cpp
@@ -58,12 +67,6 @@ include_directories( PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)    # So that the L
 # debug directories
 get_directory_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
 MESSAGE(WARNING ${dirs})
-
-set_target_properties(${PROJECT_NAME}
-  PROPERTIES CXX_STANDARD 20
-             CXX_STANDARD_REQUIRED ON
-             CXX_EXTENSIONS NO
-)
 
 target_compile_definitions(${PROJECT_NAME} 
 	PRIVATE "JUCER_ENABLE_GPL_MODE=1"
