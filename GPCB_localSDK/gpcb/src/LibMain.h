@@ -7,6 +7,7 @@
 // #include "interfaces/C/GPTypes.h"
 #include <windows.h>
 #include <LogWindow.h>
+#include <MultiAsyncUpdater.h>
 
 
 // define an XML string describing your product
@@ -53,15 +54,21 @@ class LibMain : public GigPerformerAPI
 		int GetMenuCount() override;
 		std::string GetMenuName(int index) override;
 		void InvokeMenu(int itemIndex) override;
-		
+
+		bool hasGigFinishedLoading = false;
+		MultiAsyncUpdater* actionQueue;
+	
 	public:
 		explicit LibMain(LibraryHandle handle) : GigPerformerAPI(handle)
 		{
+			actionQueue = new MultiAsyncUpdater();
 		}
 		
 		~LibMain() override
 		{
 		}
+
+		void enqueueAction(std::function<void()> callback);
 
 		void logToWindow(const std::string & message, bool openLogWindow);
 		void setDebug(boolean state); 

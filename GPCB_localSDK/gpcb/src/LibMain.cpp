@@ -68,6 +68,19 @@ void LibMain::InvokeMenu(int index)
         }
     }
 }
+void LibMain::enqueueAction(std::function<void()> callback)
+{
+	if(hasGigFinishedLoading) {
+		if(debug) scriptLog("enqueueAction - gig is flush queue immediately",true);
+	} else {
+		if(debug) scriptLog("enqueueAction - delay execution until GigFinishedLoading",true);
+	}
+	actionQueue->callOnMessageThread(callback);
+	if(hasGigFinishedLoading) {
+		actionQueue->triggerAsyncUpdate();
+	}
+}
+
 void LibMain::ListAvailableHandles()
 {
 	std::vector<std::string> list;
