@@ -80,19 +80,39 @@ class LibMain : public GigPerformerAPI
 			scriptLog("Extension: OnOpen",true);
 			LogWindow::initialize();
 		}
+		
+		// void OnVariationChanged(int oldIndex, int newIndex) override {
+		// 	scriptLog("Extension: OnVariationChanged " + std::to_string(oldIndex) + " " + std::to_string(newIndex),true);
+		// }
+		
+		void OnStatusChanged(GPStatusType status) override {
+			if(status == GPStatusType::GPStatus_GigFinishedLoading) {
+				if(debug) scriptLog("Extension: OnStatusChanged -> GigFinishedLoading", true);
+				hasGigFinishedLoading = true;
+				actionQueue->triggerAsyncUpdate(); // flush actions scheduled during loadup
+			} else if(status == GPStatusType::GPStatus_GigStartedLoading) {
+				if(debug) scriptLog("Extension: OnStatusChanged -> GigStartedLoading", true);
+				hasGigFinishedLoading = false;
+			}
+		}
 
 		void OnClose() override {
 			LogWindow::finalize();
 		}
 
-		void OnRackspaceActivated() override {
-			scriptLog("Extension: OnRackspaceActivated. ID: " + std::to_string(getCurrentRackspaceIndex()), true);
-		}
+		// void OnRackspaceActivated() override {
+		// 	scriptLog("Extension: OnRackspaceActivated. ID: " + std::to_string(getCurrentRackspaceIndex()), true);
+		// }
 
 		void Initialization() override
 		{
 			// Do any initialization that you need
-			registerCallback("OnRackspaceActivated");
+
+			// register all the methods that you are going to actually use,
+			// listenForWidget("abc", true);
+			// registerCallback("OnVariationChanged");
+			registerCallback("OnStatusChanged");
+			// registerCallback("OnRackspaceActivated");
 			registerCallback("OnOpen");
 			registerCallback("OnClose");
 		}
