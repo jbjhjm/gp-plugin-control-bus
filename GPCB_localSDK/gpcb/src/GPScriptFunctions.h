@@ -27,7 +27,7 @@ extern "C" void GPCB_loadGPPreset(GPRuntimeEngine *vm)
 
 	bool global = GP_VM_PopBoolean(vm);
 
-	juce::MessageManager::getInstance()->callAsync([pluginHandle, presetName, global]() {
+	LibMain::getInstance()->enqueueAction([pluginHandle, presetName, global]() {
 		LibMain* gpcb = LibMain::getInstance();
 		if(gpcb->debug) gpcb->scriptLog("GPCB_loadGPPreset " + pluginHandle + " - " + presetName, global);
 		if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
@@ -50,14 +50,17 @@ extern "C" void GPCB_setPluginParam(GPRuntimeEngine *vm)
     std::string pluginHandle = buffer;
 
 	bool global = GP_VM_PopBoolean(vm);
-
-	char paramValueString[20];
-	gcvt(paramValue, 10, paramValueString);
-
-	LibMain* gpcb = LibMain::getInstance();
-	if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginParam " + pluginHandle + " - " + std::to_string(paramNumber) + "=" + paramValueString, false);
-	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
-	gpcb->setPluginParameter(pluginHandle, paramNumber, paramValue, global);
+	
+	LibMain::getInstance()->enqueueAction([pluginHandle, paramNumber, paramValue, global]() {
+		LibMain* gpcb = LibMain::getInstance();
+		if(gpcb->debug) {
+			char paramValueString[20];
+			gcvt(paramValue, 10, paramValueString);
+			gpcb->scriptLog("GPCB_setPluginParam " + pluginHandle + " - " + std::to_string(paramNumber) + "=" + paramValueString, false);
+		}
+		if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
+		gpcb->setPluginParameter(pluginHandle, paramNumber, paramValue, global);
+    });
 
 }
 
@@ -71,11 +74,13 @@ extern "C" void GPCB_setPluginBypass(GPRuntimeEngine *vm)
     std::string pluginHandle = buffer;
 
 	bool global = GP_VM_PopBoolean(vm);
-
-	LibMain* gpcb = LibMain::getInstance();
-	if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
-	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
-	gpcb->setPluginParameter(pluginHandle, -2, paramValue, global);
+	
+	LibMain::getInstance()->enqueueAction([pluginHandle, paramValue, global]() {
+		LibMain* gpcb = LibMain::getInstance();
+		if(gpcb->debug) gpcb->scriptLog("GPCB_setPluginBypass " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
+		if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
+		gpcb->setPluginParameter(pluginHandle, -2, paramValue, global);
+    });
 
 }
 
@@ -90,10 +95,12 @@ extern "C" void GPCB_showPlugin(GPRuntimeEngine *vm)
 
 	bool global = GP_VM_PopBoolean(vm);
 
-	LibMain* gpcb = LibMain::getInstance();
-	if(gpcb->debug) gpcb->scriptLog("GPCB_showPlugin " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
-	if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
-	gpcb->setPluginParameter(pluginHandle, -1, paramValue, global);
+	LibMain::getInstance()->enqueueAction([pluginHandle, paramValue, global]() {
+		LibMain* gpcb = LibMain::getInstance();
+		if(gpcb->debug) gpcb->scriptLog("GPCB_showPlugin " + pluginHandle + " = " + (paramValue > 0.5 ? "true" : "false"), false);
+		if(gpcb->debug) gpcb->assertPluginExists(pluginHandle, global);
+		gpcb->setPluginParameter(pluginHandle, -1, paramValue, global);
+    });
 
 }
 
@@ -105,14 +112,15 @@ extern "C" void GPCB_setWidgetValue(GPRuntimeEngine *vm)
 	char buffer[100];
     GP_VM_PopString(vm, buffer, 100);
     std::string widgetHandle = buffer;
-
-	char valueString[20];
-	gcvt(value, 10, valueString);
-
-	LibMain* gpcb = LibMain::getInstance();
-	if(gpcb->debug) gpcb->scriptLog("GPCB_setWidgetValue " + widgetHandle + " = " + valueString, false);
-	if(gpcb->debug) gpcb->assertWidgetExists(widgetHandle);
-	gpcb->setWidgetValue(widgetHandle, value);
+	
+	LibMain::getInstance()->enqueueAction([widgetHandle, value]() {
+		LibMain* gpcb = LibMain::getInstance();
+		char valueString[20];
+		gcvt(value, 10, valueString);
+		if(gpcb->debug) gpcb->scriptLog("GPCB_setWidgetValue " + widgetHandle + " = " + valueString, false);
+		if(gpcb->debug) gpcb->assertWidgetExists(widgetHandle);
+		gpcb->setWidgetValue(widgetHandle, value);
+    });
 
 }
 
@@ -126,11 +134,13 @@ extern "C" void GPCB_setWidgetCaption(GPRuntimeEngine *vm)
 
     GP_VM_PopString(vm, buffer, 100);
     std::string widgetHandle = buffer;
-
-	LibMain* gpcb = LibMain::getInstance();
-	if(gpcb->debug) gpcb->scriptLog("GPCB_setWidgetCaption " + widgetHandle + " = " + caption, false);
-	if(gpcb->debug) gpcb->assertWidgetExists(widgetHandle);
-	gpcb->setWidgetCaption(widgetHandle, caption);
+	
+	LibMain::getInstance()->enqueueAction([widgetHandle, caption]() {
+		LibMain* gpcb = LibMain::getInstance();
+		if(gpcb->debug) gpcb->scriptLog("GPCB_setWidgetCaption " + widgetHandle + " = " + caption, false);
+		if(gpcb->debug) gpcb->assertWidgetExists(widgetHandle);
+		gpcb->setWidgetCaption(widgetHandle, caption);
+    });
 
 }
 
